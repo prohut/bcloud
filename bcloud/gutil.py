@@ -12,7 +12,6 @@ import traceback
 
 import dbus
 from gi.repository import GdkPixbuf
-from gi.repository import Gio
 from gi.repository import Gtk
 from gi.repository import GLib
 
@@ -24,6 +23,12 @@ from bcloud import util
 try:
     import keyring
     keyring_available = True
+    try:
+        keyring.set_password("test", "utest", "ptest");
+        keyring.get_password("test", "utest");
+        keyring.delete_password("test", "utest");
+    except:
+        keyring_available = False
 except (ImportError, ValueError):
     logger.warn(traceback.format_exc())
     keyring_available = False
@@ -32,6 +37,7 @@ DEFAULT_PROFILE = {
     'window-size': (960, 680),
     'use-status-icon': True,
     'use-dark-theme': False, # 默认禁用深色主题
+    'display-avatar': True,  # 是否显示用户头像
     'use-notify': True,
     'first-run': True,
     'save-dir': Config.HOME_DIR,
